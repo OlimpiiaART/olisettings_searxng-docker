@@ -471,10 +471,10 @@ engines:
     disabled: true
     categories: [it, software wikis]
 
-  - name: artic
-    engine: artic
-    shortcut: arc
-    timeout: 4.0
+  # - name: artic
+  #  engine: artic
+  #  shortcut: arc
+  #  timeout: 4.0
 
   - name: arxiv
     engine: arxiv
