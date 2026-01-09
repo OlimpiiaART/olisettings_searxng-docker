@@ -1,0 +1,69 @@
+{
+    admin off
+
+    log {
+        output stderr
+        format filter {
+            request>remote_ip ip_mask 8 32
+            request>client_ip ip_mask 8 32
+            request>remote_port delete
+            request>headers delete
+            request>uri query {
+                delete url
+                delete h
+                delete q
+            }
+        }
+    }
+
+    servers {
+        client_ip_headers X-Forwarded-For X-Real-IP
+        trusted_proxies static private_ranges
+        trusted_proxies_strict
+    }
+}
+
+{$SEARXNG_HOSTNAME}:{$SEARXNG_PORT}
+tls /cert/{$SEARXNG_HOSTNAME}/fullchain.pem /cert/{$SEARXNG_HOSTNAME}/privkey.pem
+
+encode zstd gzip
+
+@api {
+    path /config
+    path /healthz
+    path /stats/errors
+    path /stats/checker
+}
+
+@static {
+    path /static/*
+}
+
+@imageproxy {
+    path /image_proxy
+}
+
+header {
+    Content-Security-Policy "upgrade-insecure-requests; default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; form-action 'self' https:; font-src 'self'; frame-ancestors 'self'; base-uri 'self'; connect-src 'self'; img-src * data:; frame-src https:;"
+    Permissions-Policy "accelerometer=(),camera=(),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),payment=(),usb=()"
+    Referrer-Policy "same-origin"
+    X-Content-Type-Options "nosniff"
+    X-Robots-Tag "noindex, nofollow, noarchive, nositelinkssearchbox, nosnippet, notranslate, noimageindex"
+    -Server
+}
+
+header @api {
+    Access-Control-Allow-Methods "GET, OPTIONS"
+    Access-Control-Allow-Origin "*"
+}
+
+route {
+    header Cache-Control "no-cache"
+    header @static Cache-Control "public, max-age=30, stale-while-revalidate=60"
+    header @imageproxy Cache-Control "public, max-age=3600"
+}
+
+route /searxng* {
+    uri strip_prefix /searxng
+    reverse_proxy searxng:8080
+}
