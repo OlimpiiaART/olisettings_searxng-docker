@@ -25,10 +25,10 @@ use_default_settings:
       - mediawiki
 
       # IT
-      - stackexchange
       - github
-      - archlinux
       - mdn
+      - arch linux wiki
+      - stackoverflow
 
       # Files
       # - piratebay
@@ -285,6 +285,7 @@ plugins:
   searx.plugins.tracker_url_remover.SXNGPlugin:
     active: true
 
+
 categories_as_tabs:
   general:
   images:
@@ -295,15 +296,23 @@ categories_as_tabs:
   # files:
   # social media:
 
+
 engines:
   - name: mojeek
     shortcut: mjk
     engine: mojeek
     disabled: false
+
   - name: mojeek images
     shortcut: mjkimg
     engine: mojeek
     categories: [images, web]
     search_type: images
-    paging: false
+    disabled: false
+
+  - name: duckduckgo images
+    shortcut: ddi
+    engine: duckduckgo_extra
+    categories: [images, web]
+    ddg_category: images
     disabled: false
