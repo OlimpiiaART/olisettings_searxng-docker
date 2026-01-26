@@ -64,6 +64,7 @@ general:
 
 brand:
   docs_url: https://docs.searxng.org/
+  wiki_url: https://github.com/searxng/searxng/wiki
 
 search:
   # Filter results. 0: None, 1: Moderate, 2: Strict
@@ -81,15 +82,6 @@ search:
   # use codes from 'languages.py'
   default_lang: "all"
   # max_page: 0  # if engine supports paging, 0 means unlimited numbers of pages
-  # Available languages
-  # languages:
-  #   - all
-  #   - en
-  #   - en-US
-  #   - de
-  #   - it-IT
-  #   - fr
-  #   - fr-BE
   # ban time in seconds after engine errors
   ban_time_on_fail: 5
   # max ban time in seconds after engine errors
@@ -97,16 +89,16 @@ search:
   suspended_times:
     # Engine suspension time after error (in seconds; set to 0 to disable)
     # For error "Access denied" and "HTTP error [402, 403]"
-    SearxEngineAccessDenied: 86400
+    SearxEngineAccessDenied: 600
     # For error "CAPTCHA"
-    SearxEngineCaptcha: 86400
+    SearxEngineCaptcha: 600
     # For error "Too many request" and "HTTP error 429"
-    SearxEngineTooManyRequests: 3600
+    SearxEngineTooManyRequests: 60
     # Cloudflare CAPTCHA
-    cf_SearxEngineCaptcha: 1296000
-    cf_SearxEngineAccessDenied: 86400
+    cf_SearxEngineCaptcha: 600
+    cf_SearxEngineAccessDenied: 600
     # ReCAPTCHA
-    recaptcha_SearxEngineCaptcha: 604800
+    recaptcha_SearxEngineCaptcha: 600
 
   # remove format to deny access, use lower case.
   # formats: [html, csv, json, rss]
@@ -125,15 +117,12 @@ server:
   # Is overwritten by ${SEARXNG_PUBLIC_INSTANCE}
   public_instance: false
 
-  # If your instance owns a /etc/searxng/settings.yml file, then set the following
-  # values there.
-
   listen: "0.0.0.0:8080"
   secret_key: ${SEARXNG_SECRET}  # Is overwritten by ${SEARXNG_SECRET}
   # Proxy image results through SearXNG. Is overwritten by ${SEARXNG_IMAGE_PROXY}
   image_proxy: true
   # 1.0 and 1.1 are supported
-  http_protocol_version: "1.0"
+  http_protocol_version: "1.1"
   # POST queries are more secure as they don't show up in history but may cause
   # problems when using Firefox containers.
   # Is overwritten by ${SEARXNG_METHOD}
@@ -143,12 +132,6 @@ server:
     X-Download-Options: noopen
     X-Robots-Tag: noindex, nofollow
     Referrer-Policy: no-referrer
-
-valkey:
-  # URL to connect valkey database. Is overwritten by ${SEARXNG_VALKEY_URL}.
-  # https://docs.searxng.org/admin/settings/settings_valkey.html#settings-valkey
-  # url: valkey://localhost:6379/0
-  url: false
 
 ui:
   # Custom static path - leave it blank if you didn't change
@@ -182,28 +165,7 @@ ui:
   # URL formatting: pretty, full or host
   url_formatting: host
 
-# Lock arbitrary settings on the preferences page.
-#
-# preferences:
-#   lock:
-#     - categories
-#     - language
-#     - autocomplete
-#     - favicon
-#     - safesearch
-#     - method
-#     - doi_resolver
-#     - locale
-#     - theme
-#     - results_on_new_tab
-#     - infinite_scroll
-#     - search_on_category_select
-#     - method
-#     - image_proxy
-#     - query_in_title
 
-# communication with search engines
-#
 outgoing:
   # default timeout in seconds, can be override by engine
   request_timeout: 3.0
@@ -222,68 +184,6 @@ outgoing:
   # proxies:
   # all://:
   #   - socks5h://127.0.0.1:9050
-
-
-  # uncomment below section if you want to use a custom server certificate
-  # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
-  # and https://www.python-httpx.org/compatibility/#ssl-configuration
-  #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
-  #
-  # uncomment below section if you want to use a proxyq see: SOCKS proxies
-  #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-  # are also supported: see
-  #   https://2.python-requests.org/en/latest/user/advanced/#socks
-  #
-  #  proxies:
-  #    all://:
-  #      - http://proxy1:8080
-  #      - http://proxy2:8080
-  #
-  #using_tor_proxy: true
-  #
-  # Extra seconds to add in order to account for the time taken by the proxy
-  #
-  #  extra_proxy_timeout: 10
-  #
-  # uncomment below section only if you have more than one network interface
-  # which can be the source of outgoing search requests
-  #
-  #  source_ips:
-  #    - 1.1.1.1
-  #    - 1.1.1.2
-  #    - fe80::/126
-
-# Plugin configuration, for more details see
-#   https://docs.searxng.org/admin/settings/settings_plugins.html
-#
-plugins:
-
-  searx.plugins.calculator.SXNGPlugin:
-    active: true
-
-  searx.plugins.hash_plugin.SXNGPlugin:
-    active: true
-
-  searx.plugins.self_info.SXNGPlugin:
-    active: true
-
-  searx.plugins.unit_converter.SXNGPlugin:
-    active: true
-
-  searx.plugins.ahmia_filter.SXNGPlugin:
-    active: true
-
-  searx.plugins.hostnames.SXNGPlugin:
-    active: true
-
-  searx.plugins.oa_doi_rewrite.SXNGPlugin:
-    active: false
-
-  searx.plugins.tor_check.SXNGPlugin:
-    active: false
-
-  searx.plugins.tracker_url_remover.SXNGPlugin:
-    active: true
 
 
 categories_as_tabs:
