@@ -3,10 +3,10 @@ use_default_settings:
     keep_only:
       # General
       - brave
-      - mojeek
-      - startpage
       - duckduckgo
+      - mojeek
       - qwant
+      - startpage
       - wikipedia
       - wikidata
 
@@ -188,4 +188,11 @@ engines:
     engine: duckduckgo_extra
     categories: [images, web]
     ddg_category: images
+    disabled: false
+    
+  - name: qwant
+    qwant_categ: web
+    engine: qwant
+    shortcut: qw
+    categories: [general, web]
     disabled: false
