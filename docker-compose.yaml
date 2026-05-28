@@ -1,43 +1,51 @@
-# version: "3.7"
+# Read the documentation before using the `docker-compose.yml` file:
+# https://docs.searxng.org/admin/installation-docker.html
+
+name: searxng
 
 services:
-  caddy:
-    container_name: caddy
-    image: caddy:2-alpine
-    restart: unless-stopped
+  core:
+    container_name: searxng-core
+    image: docker.io/searxng/searxng:${SEARXNG_VERSION:-latest}
+    restart: always
     ports:
-      - "${SEARXNG_PORT}:${SEARXNG_PORT}"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-      - caddy-config:/config
-      - ./cert:/cert
-    networks:
-      - searxng
-    environment:
-      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME}
-      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
-      - SEARXNG_PORT=${SEARXNG_PORT}
-
-  searxng:
-    container_name: searxng
-    image: searxng/searxng:latest
-    restart: unless-stopped
-    networks:
-      - searxng
-    ports:
+      # - ${SEARXNG_HOST:+${SEARXNG_HOST}:}${SEARXNG_PORT:-8080}:${SEARXNG_PORT:-8080}
       - "8080:8080"
+    env_file: ./.env
     volumes:
-      - ./searxng:/etc/searxng:rw
-      - searxng-data:/var/cache/searxng:rw
+      - ./core-config/:/etc/searxng/:Z
+      - core-data:/var/cache/searxng/
     environment:
-      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME}:${SEARXNG_PORT}/searxng/
+      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME}:${SEARXNG_PORT}/${SEARXNG_PATH}/
       - SEARXNG_SECRET=${SEARXNG_SECRET}
 
-volumes:
-  caddy-data:
-  caddy-config:
-  searxng-data:
+  valkey:
+    container_name: searxng-valkey
+    image: docker.io/valkey/valkey:9-alpine
+    command: valkey-server --save 30 1 --loglevel warning
+    restart: always
+    volumes:
+      - valkey-data:/data/
 
-networks:
-  searxng:
+  caddy:
+    image: caddy:2-alpine
+    container_name: searxng-caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "${SEARXNG_PORT}:${SEARXNG_PORT}"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME}
+      - SEARXNG_PORT=${SEARXNG_PORT}
+      - SEARXNG_PATH=${SEARXNG_PATH}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+
+volumes:
+  core-data:
+  valkey-data:
+  caddy_data:
+  caddy_config:
