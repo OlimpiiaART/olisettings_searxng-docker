@@ -198,3 +198,8 @@ engines:
     shortcut: qw
     categories: [general, web]
     disabled: false
+
+  - name: bing
+    engine: bing
+    shortcut: bi
+    disabled: false
