@@ -1,0 +1,191 @@
+use_default_settings:
+  engines:
+    keep_only:
+      # General
+      - brave
+      - mojeek
+      - startpage
+      - duckduckgo
+      - qwant
+      - wikipedia
+      - wikidata
+
+      # Images
+      - mojeek images
+      - startpage images
+      - google images
+      - bing images
+      - duckduckgo images
+      # - devicons
+      # - lucide
+      - deviantart
+
+      # Video
+      - youtube
+      - vimeo
+      - mediawiki
+
+      # IT
+      - github
+      - mdn
+      - arch linux wiki
+      - stackoverflow
+
+      # Files
+      # - piratebay
+      # - bt4g
+      # - kickass
+
+      # News
+      # - startpage news
+      # - wikinews
+      # - brave.news
+      # - google news
+      # - qwant news
+      # - yahoo news
+
+general:
+  # Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}
+  debug: false
+  # displayed name
+  instance_name: "SearXNG"
+  # For example: https://example.com/privacy
+  privacypolicy_url: false
+  # use true to use your own donation page written in searx/info/en/donate.md
+  # use false to disable the donation link
+  donation_url: false
+  # mailto:contact@example.com
+  contact_url: false
+  # record stats
+  enable_metrics: false
+  # expose stats in open metrics format at /metrics
+  # leave empty to disable (no password set)
+  # open_metrics: <password>
+  open_metrics: ''
+
+search:
+  # Filter results. 0: None, 1: Moderate, 2: Strict
+  safe_search: 0
+  # Existing autocomplete backends: "360search", "baidu", "brave", "dbpedia", "duckduckgo", "google", "yandex",
+  # "mwmbl", "naver", "seznam", "sogou", "startpage", "stract", "swisscows", "quark", "qwant", "wikipedia" -
+  # leave blank to turn it off by default.
+  # autocomplete: "duckduckgo"
+  # minimun characters to type before autocompleter starts
+  autocomplete_min: 4
+  # backend for the favicon near URL in search results.
+  # Available resolvers: "allesedv", "duckduckgo", "google", "yandex" - leave blank to turn it off by default.
+  favicon_resolver: "allesedv"
+  # Default search language - leave blank to detect from browser information or
+  # use codes from 'languages.py'
+  default_lang: "auto"
+  # max_page: 0  # if engine supports paging, 0 means unlimited numbers of pages
+  # ban time in seconds after engine errors
+  ban_time_on_fail: 5
+  # max ban time in seconds after engine errors
+  max_ban_time_on_fail: 120
+  suspended_times:
+    # Engine suspension time after error (in seconds; set to 0 to disable)
+    # For error "Access denied" and "HTTP error [402, 403]"
+    SearxEngineAccessDenied: 600
+    # For error "CAPTCHA"
+    SearxEngineCaptcha: 600
+    # For error "Too many request" and "HTTP error 429"
+    SearxEngineTooManyRequests: 60
+    # Cloudflare CAPTCHA
+    cf_SearxEngineCaptcha: 600
+    cf_SearxEngineAccessDenied: 600
+    # ReCAPTCHA
+    recaptcha_SearxEngineCaptcha: 600
+
+  # remove format to deny access, use lower case.
+  # formats: [html, csv, json, rss]
+  formats:
+    - html
+
+server:
+  bind_address: "127.0.0.1"
+  # public URL of the instance, to ensure correct inbound links. Is overwritten
+  # by ${SEARXNG_BASE_URL}.
+  base_url: false  # "http://example.com/location"
+  # rate limit the number of request on the instance, block some bots.
+  # Is overwritten by ${SEARXNG_LIMITER}
+  limiter: false
+  # enable features designed only for public instances.
+  # Is overwritten by ${SEARXNG_PUBLIC_INSTANCE}
+  public_instance: false
+
+  listen: "0.0.0.0:8080"
+  secret_key: ${SEARXNG_SECRET}  # Is overwritten by ${SEARXNG_SECRET}
+  # Proxy image results through SearXNG. Is overwritten by ${SEARXNG_IMAGE_PROXY}
+  image_proxy: true
+  # 1.0 and 1.1 are supported
+  http_protocol_version: "1.1"
+  # POST queries are more secure as they don't show up in history but may cause
+  # problems when using Firefox containers.
+  # Is overwritten by ${SEARXNG_METHOD}
+  method: "POST"
+  default_http_headers:
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Robots-Tag: noindex, nofollow
+    Referrer-Policy: no-referrer
+
+ui:
+  # Custom static path - leave it blank if you didn't change
+  static_path: ""
+  # Custom templates path - leave it blank if you didn't change
+  templates_path: ""
+  # query_in_title: When true, the result page's titles contains the query
+  # it decreases the privacy, since the browser can records the page titles.
+  query_in_title: false
+  # ui theme
+  # default_theme: simple
+  # center the results ?
+  center_alignment: false
+  # URL prefix of the internet archive, don't forget trailing slash (if needed).
+  # cache_url: "https://webcache.googleusercontent.com/search?q=cache:"
+  # Default interface locale - leave blank to detect from browser information or
+  # use codes from the 'locales' config section
+  default_locale: ""
+  # Open result links in a new tab by default
+  results_on_new_tab: true
+  theme_args:
+    # style of simple theme: auto, light, dark
+    simple_style: auto
+  # Perform search immediately if a category selected.
+  # Disable to select multiple categories at once and start the search manually.
+  search_on_category_select: true
+  # Hotkeys: default or vim
+  hotkeys: default
+  # URL formatting: pretty, full or host
+  url_formatting: host
+
+categories_as_tabs:
+  general:
+  images:
+  videos:
+  it:
+  # news:
+  # science:
+  # files:
+  # social media:
+
+engines:
+  - name: mojeek
+    shortcut: mjk
+    engine: mojeek
+    disabled: false
+
+  - name: mojeek images
+    shortcut: mjkimg
+    engine: mojeek
+    categories: [images, web]
+    search_type: images
+    disabled: false
+
+  - name: duckduckgo images
+    shortcut: ddi
+    engine: duckduckgo_extra
+    categories: [images, web]
+    ddg_category: images
+    disabled: false
