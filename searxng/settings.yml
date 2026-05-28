@@ -5,7 +5,7 @@ use_default_settings:
       - brave
       - mojeek
       - startpage
-      # - duckduckgo ?
+      - duckduckgo
       - wikipedia
       - wikidata
 
@@ -15,7 +15,7 @@ use_default_settings:
       - google images
       - bing images
       - duckduckgo images
-      - devicons
+      # - devicons
       # - lucide
       - deviantart
 
