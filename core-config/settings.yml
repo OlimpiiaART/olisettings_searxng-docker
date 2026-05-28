@@ -46,6 +46,104 @@ use_default_settings:
       # - qwant news
       # - yahoo news
 
+search:
+  favicon_resolver: "allesedv"
+
+ui:
+  url_formatting: host
+
+server:
+  image_proxy: true
+
+categories_as_tabs:
+  general:
+  images:
+  videos:
+  it:
+  # news:
+  # science:
+  # files:
+  # social media:
+
+engines:
+  - name: mojeek
+    shortcut: mjk
+    engine: mojeek
+    disabled: false
+
+  - name: mojeek images
+    shortcut: mjkimg
+    engine: mojeek
+    categories: [images, web]
+    search_type: images
+    disabled: false
+
+  - name: duckduckgo images
+    shortcut: ddi
+    engine: duckduckgo_extra
+    categories: [images, web]
+    ddg_category: images
+    disabled: false
+
+  - name: bing
+    engine: bing
+    shortcut: bi
+    disabled: false
+
+  - name: qwant
+    qwant_categ: web
+    engine: qwant
+    shortcut: qw
+    categories: [general, web]
+    disabled: false
+use_default_settings:
+  engines:
+    keep_only:
+      # General
+      - brave
+      - bing
+      - google
+      - duckduckgo
+      - mojeek
+      - qwant
+      - startpage
+      - wikipedia
+      - wikidata
+
+      # Images
+      - mojeek images
+      - startpage images
+      - google images
+      - bing images
+      - duckduckgo images
+      # - devicons
+      # - lucide
+      - deviantart
+
+      # Video
+      - youtube
+      - vimeo
+      - mediawiki
+
+      # IT
+      - github
+      - mdn
+      - arch linux wiki
+      - stackoverflow
+
+      # Files
+      # - piratebay
+      # - bt4g
+      # - kickass
+
+      # News
+      # - startpage news
+      # - wikinews
+      # - brave.news
+      # - google news
+      # - qwant news
+      # - yahoo news
+
 general:
   # Debug mode, only for development. Is overwritten by ${SEARXNG_DEBUG}
   debug: false
