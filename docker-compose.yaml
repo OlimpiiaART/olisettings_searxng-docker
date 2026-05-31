@@ -1,3 +1,60 @@
+olim@debian:~/searxng$ cat docker-compose.yml
+# Read the documentation before using the `docker-compose.yml` file:
+# https://docs.searxng.org/admin/installation-docker.html
+
+name: searxng
+
+services:
+  searxng-tor:
+    image: peterdavehello/tor-socks-proxy:latest
+    restart: always
+    command: tor -f /etc/tor/torrc --MaxCircuitDirtiness 120 --NewCircuitPeriod 30
+
+  core:
+    container_name: searxng-core
+    image: docker.io/searxng/searxng:${SEARXNG_VERSION:-latest}
+    restart: always
+    ports:
+      # - ${SEARXNG_HOST:+${SEARXNG_HOST}:}${SEARXNG_PORT:-8080}:${SEARXNG_PORT:-8080}
+      - "8080:8080"
+    env_file: ./.env
+    volumes:
+      - ./core-config/:/etc/searxng/:Z
+      - core-data:/var/cache/searxng/
+    environment:
+      - SEARXNG_BASE_URL=https://${SEARXNG_HOSTNAME}:${SEARXNG_PORT}/${SEARXNG_PATH}/
+      - SEARXNG_SECRET=${SEARXNG_SECRET}
+
+  valkey:
+    container_name: searxng-valkey
+    image: docker.io/valkey/valkey:9-alpine
+    command: valkey-server --save 30 1 --loglevel warning
+    restart: always
+    volumes:
+      - valkey-data:/data/
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: searxng-caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "${SEARXNG_PORT}:${SEARXNG_PORT}"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME}
+      - SEARXNG_PORT=${SEARXNG_PORT}
+      - SEARXNG_PATH=${SEARXNG_PATH}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+
+volumes:
+  core-data:
+  valkey-data:
+  caddy_data:
+  caddy_config:
 # Read the documentation before using the `docker-compose.yml` file:
 # https://docs.searxng.org/admin/installation-docker.html
 
