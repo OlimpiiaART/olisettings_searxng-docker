@@ -49,11 +49,29 @@ use_default_settings:
 search:
   favicon_resolver: "allesedv"
 
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 30
+
+  suspended_times:
+    SearxEngineAccessDenied: 300
+    SearxEngineCaptcha: 600
+    SearxEngineTooManyRequests: 300
+    cf_SearxEngineCaptcha: 900
+    cf_SearxEngineAccessDenied: 600
+    recaptcha_SearxEngineCaptcha: 900
+
 ui:
   url_formatting: host
 
 server:
   image_proxy: true
+
+outgoing:
+  proxies:
+    all://:
+      - socks5h://searxng-tor:9150
+
+  using_tor_proxy: true
 
 categories_as_tabs:
   general:
