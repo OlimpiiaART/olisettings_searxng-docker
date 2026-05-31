@@ -1,4 +1,3 @@
-olim@debian:~/searxng$ cat docker-compose.yml
 # Read the documentation before using the `docker-compose.yml` file:
 # https://docs.searxng.org/admin/installation-docker.html
 
