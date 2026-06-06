@@ -61,16 +61,8 @@ search:
     recaptcha_SearxEngineCaptcha: 900
 
 ui:
+  results_on_new_tab: true
   url_formatting: host
-
-server:
-  image_proxy: true
-
-outgoing:
-  proxies:
-    all://:
-      - socks5h://searxng-warp:9091
-      - socks5h://searxng-tor:9150
 
 categories_as_tabs:
   general:
@@ -82,13 +74,11 @@ categories_as_tabs:
   # files:
   # social media:
 
-# proxies: socks5h://searxng-tor:9150
 engines:
   - name: mojeek
     shortcut: mjk
     engine: mojeek
     disabled: false
-    proxies: socks5h://searxng-tor:9150
 
   - name: mojeek images
     shortcut: mjkimg
@@ -114,4 +104,4 @@ engines:
     engine: qwant
     shortcut: qw
     categories: [general, web]
-    disabled: true
+    disabled: false
