@@ -32,6 +32,8 @@ use_default_settings:
       - mdn
       - arch linux wiki
       - stackoverflow
+      - mediawiki
+      - nixos wiki
 
       # Files
       # - piratebay
@@ -74,6 +76,7 @@ categories_as_tabs:
   # files:
   # social media:
 
+# proxies: socks5h://searxng-tor:9150
 engines:
   - name: mojeek
     shortcut: mjk
@@ -85,7 +88,7 @@ engines:
     engine: mojeek
     categories: [images, web]
     search_type: images
-    disabled: false
+    disabled: true
 
   - name: duckduckgo images
     shortcut: ddi
@@ -105,3 +108,11 @@ engines:
     shortcut: qw
     categories: [general, web]
     disabled: false
+
+  - name: nixos wiki
+    engine: mediawiki
+    shortcut: nixw
+    base_url: https://wiki.nixos.org/
+    search_type: text
+    disabled: false
+    categories: [it, software wikis]
