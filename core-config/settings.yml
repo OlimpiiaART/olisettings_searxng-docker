@@ -13,7 +13,7 @@ use_default_settings:
       - wikidata
 
       # Images
-      - mojeek images
+      # - mojeek images
       - startpage images
       - google images
       - bing images
