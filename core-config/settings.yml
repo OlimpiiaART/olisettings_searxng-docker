@@ -3,7 +3,7 @@ use_default_settings:
     keep_only:
       # General
       - brave
-      - bing
+      # - bing
       - google
       - duckduckgo
       - mojeek
