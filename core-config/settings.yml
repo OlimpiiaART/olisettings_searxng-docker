@@ -10,7 +10,7 @@ use_default_settings:
       - qwant
       - startpage
       - wikipedia
-      - wikidata
+      # - wikidata
 
       # Images
       # - mojeek images
