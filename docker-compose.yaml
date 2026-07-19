@@ -4,24 +4,6 @@
 name: searxng
 
 services:
-  searxng-warp:
-    container_name: searxng-warp
-    image: monius/docker-warp-socks:latest
-    privileged: true
-    restart: always
-    stop_grace_period: 1s
-    ports:
-      - "9091:9091"
-    sysctls:
-      - net.ipv6.conf.all.disable_ipv6=0
-      - net.ipv4.conf.all.src_valid_mark=1
-
-  searxng-tor:
-    container_name: searxng-tor
-    image: peterdavehello/tor-socks-proxy:latest
-    restart: always
-    command: tor -f /etc/tor/torrc --MaxCircuitDirtiness 120 --NewCircuitPeriod 30 --CircuitBuildTimeout 10
-
   core:
     container_name: searxng-core
     image: docker.io/searxng/searxng:${SEARXNG_VERSION:-latest}
